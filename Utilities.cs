@@ -85,17 +85,23 @@ namespace PCCE
         public static ItemViewModel? PlayerItemView = null;
         public static LookupViewModel? ListedItemView = null;
         public static List<InventoryItem>? inventoryItemList = [];
+
         public static List<ListedItem>? listedItemList = [];
-        public static Dictionary<uint, string> ENNameDict = [];
+        public static Dictionary<uint, string> DisplayNameDict = [];
         public static Dictionary<uint, string> iNameDict = [];
+
+        public static int language = 0;
+
         public Utilities()
         {
-            _ = Utilities.BuildDictionary();
+            //_ = Utilities.BuildDictionary();
         }
 
-        private static async Task BuildDictionary()
+        public static async Task BuildDictionary()
         {
             listedItemList?.Clear();
+            DisplayNameDict.Clear();
+            iNameDict.Clear();
 
             using var iNameStream = await FileSystem.OpenAppPackageFileAsync("List/ItemID.csv");
             using var iNameReader = new StreamReader(iNameStream);
@@ -117,7 +123,20 @@ namespace PCCE
             iNameReader.Close();
             iNameStream.Close();
 
-            using var NameStream = await FileSystem.OpenAppPackageFileAsync("List/english.txt");
+            string languagePath;
+            if (language == 0) languagePath = "Eng";
+            else if (language == 1) languagePath = "Ger";
+            else if (language == 2) languagePath = "SpaEU";
+            else if (language == 3) languagePath = "SpaUS";
+            else if (language == 4) languagePath = "FreEU";
+            else if (language == 5) languagePath = "FreUS";
+            else if (language == 6) languagePath = "Ita";
+            else if (language == 7) languagePath = "Jap";
+            else if (language == 8) languagePath = "Kor";
+            else if (language == 9) languagePath = "Chi";
+            else languagePath = "Eng";
+
+            using var NameStream = await FileSystem.OpenAppPackageFileAsync("List/" + languagePath + ".txt");
             using var NameReader = new StreamReader(NameStream);
             while (!NameReader.EndOfStream)
             {
@@ -125,14 +144,10 @@ namespace PCCE
                 if (line != null)
                 {
                     string[] parts = line.Split([" ; "], StringSplitOptions.RemoveEmptyEntries);
-                    if (ENNameDict.ContainsKey(ConvertToUint(parts[0])))
-                    {
-
-                    }
-
+                    
                     if (parts.Length > 1)
                     {
-                        ENNameDict.Add(ConvertToUint(parts[0]), parts[1]);
+                        DisplayNameDict.Add(ConvertToUint(parts[0]), parts[1]);
                     }
                 }
             }
@@ -143,9 +158,21 @@ namespace PCCE
             {
                 for (int i = 0; i < listedItemList.Count; i++)
                 {
-                    if (ENNameDict.TryGetValue(listedItemList[i].ItemID, out string? value))
+                    /*
+                    string DisplayName;
+                    if (ChiDict.TryGetValue(listedItemList[i].ItemIName, out string? DisplayValue))
                     {
-                        listedItemList[i].ItemENName = value;
+                        DisplayName = DisplayValue;
+                    }
+                    else
+                    {
+                        DisplayName = "";
+                    }
+                    WriteTextToFile(listedItemList[i].ItemID.ToString() + " ; " + DisplayName, "List/Chi.txt"); 
+                    */
+                    if (DisplayNameDict.TryGetValue(listedItemList[i].ItemID, out string? value))
+                    {
+                        listedItemList[i].ItemDisplayName = value;
                     }
                 }
             }
@@ -153,7 +180,7 @@ namespace PCCE
 
         public static async void WriteTextToFile(string text, string targetFileName)
         {
-            string targetFile = System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, targetFileName);
+            string targetFile = System.IO.Path.Combine(targetFileName);
             using StreamWriter streamWriter = new StreamWriter(targetFile, append: true);
             await streamWriter.WriteLineAsync(text);
         }
@@ -169,9 +196,9 @@ namespace PCCE
             }
         }
 
-        public static string GetItemENName(uint itemID)
+        public static string GetItemDisplayName(uint itemID)
         {
-            if (ENNameDict.TryGetValue(itemID, out string? value))
+            if (DisplayNameDict.TryGetValue(itemID, out string? value))
             {
                 return value;
             }
@@ -604,7 +631,7 @@ namespace PCCE
                                     item.ItemID = itemID;
                                     item.IDLocation = (int)binOffset + eTableLocation + eVTable[3];
                                     item.ItemIName = GetItemIName(itemID);
-                                    item.ItemENName = GetItemENName(itemID);
+                                    item.ItemDisplayName = GetItemDisplayName(itemID);
                                     item.SetImage();
 
                                     if (itemID == 7000002)

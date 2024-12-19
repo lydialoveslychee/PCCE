@@ -2659,11 +2659,11 @@
 2001012 ; red cash register
 2001013 ; store shelf
 2001014 ; hanging chair
-2001015 ; Diana's pic
-2001016 ; Aurora's pic
-2001017 ; Flurry's pic
-2001018 ; Bianca's pic
-2001019 ; Fang's pic
+2001015 ; pic of Diana
+2001016 ; pic of Aurora
+2001017 ; pic of Flurry
+2001018 ; pic of Bianca
+2001019 ; pic of Fang
 2001020 ; mustache matryoshka
 2001021 ; holly
 2001023 ; classic table
@@ -8136,7 +8136,7 @@
 4405086 ; band gift+
 4405087 ; nordic patch gift+
 4405088 ; apple gift+
-4405089 ; grim lily gift+
+4405089 ; grim-lily gift+
 4406001 ; Festivale tank
 4406002 ; nine-ball tee
 4406003 ; floral knit dress

@@ -35,7 +35,7 @@ public partial class ItemPage : ContentPage
             if (!string.IsNullOrEmpty(ItemIDEntry.Text))
             {
                 HintIName.Text = Utilities.GetItemIName(Utilities.ConvertToUint(ItemIDEntry.Text));
-                HintENName.Text = Utilities.GetItemENName(Utilities.ConvertToUint(ItemIDEntry.Text));
+                HintDisplayName.Text = Utilities.GetItemDisplayName(Utilities.ConvertToUint(ItemIDEntry.Text));
             }
         }
     }
@@ -58,7 +58,7 @@ public partial class ItemPage : ContentPage
         {
             ItemCollectionView.ItemsSource = iv.InventoryItems.Where(i => i.ItemID.ToString().Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase) ||
                                                                           i.ItemIName.Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase) ||
-                                                                          i.ItemENName.Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase));
+                                                                          i.ItemDisplayName.Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 

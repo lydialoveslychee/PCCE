@@ -24,7 +24,7 @@ public partial class LookupPage : ContentPage
         {
             LookupCollectionView.ItemsSource = viewModel.ListedItems.Where(i => i.ItemID.ToString().Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase) ||
                                                                                 i.ItemIName.Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase) || 
-                                                                                i.ItemENName.Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase));
+                                                                                i.ItemDisplayName.Contains(e.NewTextValue, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 

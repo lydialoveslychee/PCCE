@@ -54,13 +54,19 @@ namespace PCCE.ViewModel
                 return;
             }
 
+            if (ItemSelected.PutPlace != 0)
+            {
+                await Shell.Current.DisplayAlert("Locked!", "Item in use!", "OK");
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(InputItemId) || string.IsNullOrWhiteSpace(InputItemNum)) return;
 
             ItemSelected.ItemID = Utilities.ConvertToUint(InputItemId);
             ItemSelected.ItemNum = Utilities.ConvertToUshort(InputItemNum);
 
             ItemSelected.ItemIName = Utilities.GetItemIName(ItemSelected.ItemID);
-            ItemSelected.ItemENName = Utilities.GetItemENName(ItemSelected.ItemID);
+            ItemSelected.ItemDisplayName = Utilities.GetItemDisplayName(ItemSelected.ItemID);
             ItemSelected.HasChanged = true;
 
         }

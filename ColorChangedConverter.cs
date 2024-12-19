@@ -7,27 +7,27 @@ namespace PCCE
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value == null) return Colors.Grey;
-            if ((byte)value == 1)
+            if ((byte)value == 1) // camper
             {
                 return Colors.Red;
             }
-            else if ((byte)value == 2)
+            else if ((byte)value == 2) // ground
             {
                 return Colors.Orange;
             }
-            else if ((byte)value == 3)
+            else if ((byte)value == 3) // player
             {
                 return Colors.Yellow;
             }
-            else if ((byte)value == 4)
+            else if ((byte)value == 4) // animal
             {
                 return Colors.Green;
             }
-            else if ((byte)value == 5)
+            else if ((byte)value == 5) // cabin
             {
                 return Colors.Blue;
             }
-            else if ((byte)value == 6)
+            else if ((byte)value == 6) 
             {
                 return Colors.Purple;
             }

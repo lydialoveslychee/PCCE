@@ -7,7 +7,7 @@ namespace PCCE.Model
         [ObservableProperty]
         public string itemIName;
         [ObservableProperty]
-        public string itemENName;
+        public string itemDisplayName;
         public string? ImagePath { get; set; }
         [ObservableProperty]
         public uint itemID;
@@ -32,7 +32,7 @@ namespace PCCE.Model
         public InventoryItem()
         {
             itemIName = "MissingName";
-            itemENName = "MissingName";
+            itemDisplayName = "MissingName";
             ImagePath = "MissingPath";
             itemID = 0;
             itemNum = 0;
@@ -49,7 +49,15 @@ namespace PCCE.Model
         }
         public void SetImage()
         {
-            ItemImage = ImageSource.FromFile("cookie_ticket.png");
+            ImagePath = "Images\\" + ItemIName + ".png";
+            if (File.Exists(ImagePath))
+            {
+                ItemImage = ImageSource.FromFile("Images\\" + ItemIName + ".png");
+            }
+            else
+            {
+                ItemImage = ImageSource.FromFile("cookie_ticket.png");
+            }
         }
     }
 }

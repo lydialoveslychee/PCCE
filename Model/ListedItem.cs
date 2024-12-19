@@ -14,19 +14,27 @@ namespace PCCE.Model
         [ObservableProperty]
         public string itemIName;
         [ObservableProperty]
-        public string itemENName;
+        public string itemDisplayName;
 
         public ListedItem()
         {
             itemID = 0;
             itemIName = "";
-            itemENName = "";
+            itemDisplayName = "";
             ImagePath = "";
         }
 
         public void SetImage()
         {
-            ItemImage = ImageSource.FromFile("cookie_ticket.png");
+            ImagePath = "Images\\" + ItemIName + ".png";
+            if (File.Exists(ImagePath))
+            {
+                ItemImage = ImageSource.FromFile("Images\\" + ItemIName + ".png");
+            }
+            else
+            {
+                ItemImage = ImageSource.FromFile("cookie_ticket.png");
+            }
         }
     }
 }

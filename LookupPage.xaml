@@ -64,7 +64,7 @@
                                     Grid.Column="2"
                                     VerticalOptions="Center"
                                     Padding="0">
-                                    <Label Text="{Binding ItemENName}" FontSize="20"/>
+                                    <Label Text="{Binding ItemDisplayName}" FontSize="20"/>
                                 </VerticalStackLayout>
                             </Grid>
                         </Border>

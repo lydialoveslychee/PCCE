@@ -65,7 +65,7 @@
                                     Grid.Column="2"
                                     VerticalOptions="Center"
                                     Padding="0">
-                                    <Label Text="{Binding ItemENName}" FontSize="16"/>
+                                    <Label Text="{Binding ItemDisplayName}" FontSize="16"/>
                                     <Label Text="{Binding NormalDate, StringFormat='Date : {0}'}" FontSize="12" TextColor="SlateGray"/>
                                     <Label Text="{Binding GUID, StringFormat='GUID : {0}'}" FontSize="12" TextColor="SlateGray"/>
                                 </VerticalStackLayout>
@@ -94,7 +94,7 @@
                HorizontalTextAlignment="End"
                VerticalTextAlignment="End"/>
 
-        <Label x:Name="HintENName"
+        <Label x:Name="HintDisplayName"
                Grid.Row="2"
                Grid.Column="0"
                Margin="13,10"

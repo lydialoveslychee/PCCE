@@ -11,7 +11,6 @@ namespace PCCE
         readonly CancellationTokenSource cancellationTokenSource = new();
         readonly string SaveFileName = "458ed7a124b23c5066398a3d366bc066e219f4353611cbe00c8d6b57cdef79ab";
         readonly Timer UpdateTimer;
-
         private async Task LoadFileAsync(FileResult result)
         {
             using var FileStream = await result.OpenReadAsync();
@@ -181,7 +180,34 @@ namespace PCCE
 
         private void MoreButton_Clicked(object sender, EventArgs e)
         {
+            LanguagePicker.IsEnabled = false;
             Shell.Current.GoToAsync(nameof(ItemPage));
+        }
+
+        private void LanguagePicker_Loaded(object sender, EventArgs e)
+        {
+            var value = Preferences.Get("Language", 0);
+            var picker = (Picker)sender;
+            picker.SelectedIndex = value;
+        }
+
+        private async void LanguagePicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex > 0)
+            {
+                Utilities.language = selectedIndex;
+                Preferences.Set("Language", selectedIndex);
+            }
+            else
+            {
+                Utilities.language = 0;
+                Preferences.Set("Language", 0);
+            }
+
+            await Utilities.BuildDictionary();
         }
     }
 

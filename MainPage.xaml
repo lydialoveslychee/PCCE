@@ -7,7 +7,7 @@
              Shell.NavBarIsVisible="False"
              Shell.FlyoutBehavior="Disabled">
     
-    <Grid RowDefinitions="5, Auto, Auto, *, Auto"
+    <Grid RowDefinitions="5, Auto, Auto, *, Auto, Auto"
           ColumnDefinitions=".50*,.50*"
           >
         <maui:ProgressBar   x:Name="AnimatedProgressBar"
@@ -140,8 +140,31 @@
         </Grid>
 
 
-
-        <Button Grid.Row="4"
+        <Picker Grid.Row="4"
+                Grid.ColumnSpan="2"
+                x:Name="LanguagePicker"
+                HorizontalOptions="CenterAndExpand"
+                WidthRequest="200"
+                HorizontalTextAlignment="Center"
+                Loaded="LanguagePicker_Loaded"
+                SelectedIndexChanged="LanguagePicker_SelectedIndexChanged"
+                >
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>English</x:String>
+                    <x:String>German</x:String>
+                    <x:String>Spanish (EU)</x:String>
+                    <x:String>Spanish (US)</x:String>
+                    <x:String>French (EU)</x:String>
+                    <x:String>French (US)</x:String>
+                    <x:String>Italian</x:String>
+                    <x:String>Japanese</x:String>
+                    <x:String>Korean</x:String>
+                    <x:String>Chinese</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+        <Button Grid.Row="5"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Margin="10"
