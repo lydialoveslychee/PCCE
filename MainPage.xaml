@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maui="clr-namespace:epj.ProgressBar.Maui;assembly=epj.ProgressBar.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PCCE.MainPage"
+             Shell.NavBarIsVisible="False"
+             Shell.FlyoutBehavior="Disabled">
+    
+    <Grid RowDefinitions="5, Auto, Auto, *, Auto"
+          ColumnDefinitions=".50*,.50*"
+          >
+        <maui:ProgressBar   x:Name="AnimatedProgressBar"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            HeightRequest="5"
+                            Progress="0"
+                            UseGradient="True"
+                            ProgressColor="Blue"
+                            GradientColor="Aqua"
+                            HorizontalOptions="FillAndExpand"
+                            IsVisible="false"
+                            />
+        
+        <Image Grid.Row="1"
+               Grid.ColumnSpan="2"
+               Source="cookie_ticket.png"
+               HeightRequest="128"
+               Aspect="AspectFit"
+               />
+        
+        <Button Grid.Row="2"
+                Grid.Column="0"
+                Margin="10,10"
+                FontSize="16"
+                x:Name="LoadBtn"
+                Text="Load" 
+                SemanticProperties.Hint="LoadFile"
+                Clicked="OnLoadClicked"
+                TextColor="White"
+                HorizontalOptions="Fill" 
+                />
+
+        <Button Grid.Row="2"
+                Grid.Column="1"
+                Margin="10,10"
+                FontSize="16"
+                x:Name="SaveBtn"
+                Text="Save" 
+                SemanticProperties.Hint="SaveFile"
+                Clicked="OnSaveClicked"
+                TextColor="White"
+                HorizontalOptions="Fill" 
+                />
+
+        <Grid RowDefinitions="Auto, Auto, Auto, Auto"
+              Grid.Row="3" 
+              Grid.ColumnSpan="2"
+              ColumnDefinitions=".50*,.50*"
+              >
+              <Label Text="Bells"
+                     Margin="10,10"
+                     FontSize="16"
+                     Grid.Row="0"
+                     Grid.Column="0"
+                     HorizontalOptions="Center"
+                     />
+            
+              <Label Text="Leaf Tokens"
+                     Margin="10,10"
+                     FontSize="16"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     HorizontalOptions="Center"
+                     />
+
+              <Entry x:Name="BellsEntry"
+                     Grid.Row="1"
+                     Grid.Column="0"
+                     Margin="10,10"
+                     IsEnabled="False"
+                     Placeholder="Bells"
+                     MaxLength="9"
+                     Keyboard="Numeric"
+                     HorizontalOptions="FillAndExpand"
+                     TextChanged="BellsEntry_TextChanged"
+                     />
+
+              <Entry x:Name="LeafTokensEntry"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     Margin="10,10"
+                     IsEnabled="False"
+                     Placeholder="Leaf Token"
+                     MaxLength="9"
+                     Keyboard="Numeric"
+                     HorizontalOptions="FillAndExpand"
+                     TextChanged="LeafTokensEntry_TextChanged"
+                     />
+
+              <Label Text="Complete Tickets"
+                     Margin="10,10"
+                     FontSize="16"
+                     Grid.Row="2"
+                     Grid.Column="0"
+                     HorizontalOptions="Center"
+                     />
+
+              <Label Text="Gold Treats"
+                     Margin="10,10"
+                     FontSize="16"
+                     Grid.Row="2"
+                     Grid.Column="1"
+                     HorizontalOptions="Center"
+                     />
+
+              <Entry x:Name="CompleteTicketsEntry"
+                     Grid.Row="3"
+                     Grid.Column="0"
+                     Margin="10,10"
+                     IsEnabled="False"
+                     Placeholder="Complete Tickets"
+                     MaxLength="4"
+                     Keyboard="Numeric"
+                     HorizontalOptions="FillAndExpand"
+                     TextChanged="CompleteTicketsEntry_TextChanged"
+                     />
+              <Entry x:Name="GoldTreatsEntry"
+                     Grid.Row="3"
+                     Grid.Column="1"
+                     Margin="10,10"
+                     IsEnabled="False"
+                     Placeholder="Gold Treats"
+                     MaxLength="4"
+                     Keyboard="Numeric"
+                     HorizontalOptions="FillAndExpand"
+                     TextChanged="GoldTreatsEntry_TextChanged"
+                     />
+
+        </Grid>
+
+
+
+        <Button Grid.Row="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="10"
+                x:Name="MoreButton"
+                Text="More"
+                TextColor="White"
+                IsEnabled="false"
+                Clicked="MoreButton_Clicked"
+                />
+    </Grid>
+
+</ContentPage>
