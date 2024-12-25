@@ -78,15 +78,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\cookie_ticket_appicon.svg" BaseSize="128,128">
-		  <CopyToOutputDirectory></CopyToOutputDirectory>
-		</MauiIcon>
+		<!-- App icon for Windows -->
+		<MauiIcon Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'" Include="Resources\AppIcon\cookie_ticket_appicon.svg" />
+		
+		<!-- App icon for all other platforms -->
+		<MauiIcon Include="Resources\AppIcon\leaf_token.svg" />
 		
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</MauiSplashScreen>
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#7289da" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -102,6 +101,7 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="epj.ProgressBar.Maui" Version="1.0.2" />
+		<PackageReference Include="Google.FlatBuffers" Version="24.12.23" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.21" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 	</ItemGroup>
@@ -116,7 +116,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="ItemPageAndroid.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="ItemPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="LookupPageAndroid.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="LookupPage.xaml">
@@ -161,8 +167,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Images\" />
 	  <Folder Include="Resources\Raw\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="ItemPageAndroid.xaml.cs">
+	    <DependentUpon>ItemPageAndroid.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="LookupPageAndroid.xaml.cs">
+	    <DependentUpon>LookupPageAndroid.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>

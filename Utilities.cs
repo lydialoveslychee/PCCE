@@ -1,6 +1,7 @@
 ﻿using PCCE.Model;
 using PCCE.ViewModel;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Text;
 
 
@@ -62,6 +63,7 @@ namespace PCCE
         //private static uint xorKey_len = 1000;
 
         private byte[]? decryptBytes = null;
+        public byte[]? encryptBytes = null;
 
         public uint UserID = 0;
         public uint Birthday = 0;
@@ -94,7 +96,7 @@ namespace PCCE
 
         public Utilities()
         {
-            //_ = Utilities.BuildDictionary();
+
         }
 
         public static async Task BuildDictionary()
@@ -272,16 +274,41 @@ namespace PCCE
 
             for (uint i = 0; i < 16; ++i)
             {
+                uint value = 0;
+                for (uint j = 0; j < 4; ++j)
+                {
+                    value = (value << 8) | data[i * 4 + j];
+                }
+                w[i] = value;
+            }
+
+            /*
+            for (uint i = 0; i < 16; ++i)
+            {
                 w[i] = (uint)(data[(i << 2) + 3] | (data[(i << 2) + 2] << 8) |
                               (data[(i << 2) + 1] << 16) | (data[(i << 2) + 0] << 24));
             }
+            */
 
+            for (uint i = 16; i < 64; ++i)
+            {
+                uint s0 = ((w[i - 15] << (32 - 7)) | ((w[i - 15] & 0xFFFFFFFF) >> 7)) ^
+                          ((w[i - 15] << (32 - 18)) | ((w[i - 15] & 0xFFFFFFFF) >> 18)) ^
+                          (w[i - 15] >> 3);
+                uint s1 = ((w[i - 2] << (32 - 17)) | ((w[i - 2] & 0xFFFFFFFF) >> 17)) ^
+                          ((w[i - 2] << (32 - 19)) | ((w[i - 2] & 0xFFFFFFFF) >> 19)) ^
+                          (w[i - 2] >> 10);
+                w[i] = w[i - 16] + s0 + w[i - 7] + s1;
+            }
+
+            /*
             for (uint i = 16; i < 64; ++i)
             {
                 uint s0 = RotateRight(w[i - 15], 7) ^ RotateRight(w[i - 15], 18) ^ (w[i - 15] >> 3);
                 uint s1 = RotateRight(w[i - 2], 17) ^ RotateRight(w[i - 2], 19) ^ (w[i - 2] >> 10);
                 w[i] = w[i - 16] + s0 + w[i - 7] + s1;
             }
+            */
 
             uint[] k = [
             0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
@@ -297,7 +324,7 @@ namespace PCCE
             0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
             ];
 
-            uint a = hash[0];
+        uint a = hash[0];
             uint b = hash[1];
             uint c = hash[2];
             uint d = hash[3];
@@ -308,7 +335,55 @@ namespace PCCE
 
             for (uint i = 0; i < 64; ++i)
             {
-                uint temp1 = h + (RotateRight(e, 6) ^ RotateRight(e, 11) ^ RotateRight(e, 25)) + (g ^ (e & (f ^ g))) + k[i] + w[i];
+                uint temp1 = h + (
+                    ((e << (32 - 6)) | ((e & 0xFFFFFFFF) >> 6)) ^
+                    ((e << (32 - 11)) | ((e & 0xFFFFFFFF) >> 11)) ^
+                    ((e << (32 - 25)) | ((e & 0xFFFFFFFF) >> 25))
+                ) + (g ^ (e & (f ^ g))) + k[i] + w[i];
+                uint temp2 = (
+                    ((a << (32 - 2)) | ((a & 0xFFFFFFFF) >> 2)) ^
+                    ((a << (32 - 13)) | ((a & 0xFFFFFFFF) >> 13)) ^
+                    ((a << (32 - 22)) | ((a & 0xFFFFFFFF) >> 22))
+                ) + ((a & b) | (c & (a | b)));
+                uint temp = a;
+                a = temp1 + temp2;
+                h = g;
+                g = f;
+                f = e;
+                e = d + temp1;
+                d = c;
+                c = b;
+                b = temp;
+            }
+
+            /*
+            for (uint i = 0; i < 64; ++i)
+            {
+                uint temp1 = h + (
+                    ((e << (32 - 6)) | ((e & 0xFFFFFFFF) >> 6)) ^
+                    ((e << (32 - 11)) | ((e & 0xFFFFFFFF) >> 11)) ^
+                    ((e << (32 - 25)) | ((e & 0xFFFFFFFF) >> 25))
+                ) + (g ^ (e & (f ^ g))) + sha256k[i] + w[i];
+                uint temp2 = (
+                    ((a << (32 - 2)) | ((a & 0xFFFFFFFF) >> 2)) ^
+                    ((a << (32 - 13)) | ((a & 0xFFFFFFFF) >> 13)) ^
+                    ((a << (32 - 22)) | ((a & 0xFFFFFFFF) >> 22))
+                ) + ((a & b) | (c & (a | b)));
+                h = g;
+                g = f;
+                f = e;
+                e = d + temp1;
+                d = c;
+                c = b;
+                b = a;
+                a = temp1 + temp2;
+            }
+            */
+
+            /*
+            for (uint i = 0; i < 64; ++i)
+            {
+                uint temp1 = h + (RotateRight(e, 6) ^ RotateRight(e, 11) ^ RotateRight(e, 25)) + (g ^ (e & (f ^ g))) + sha256k[i] + w[i];
                 uint temp2 = (RotateRight(a, 2) ^ RotateRight(a, 13) ^ RotateRight(a, 22)) + ((a & b) | (c & (a | b)));
                 h = g;
                 g = f;
@@ -319,6 +394,7 @@ namespace PCCE
                 b = a;
                 a = temp1 + temp2;
             }
+            */
 
             hash[0] += a;
             hash[1] += b;
@@ -328,6 +404,7 @@ namespace PCCE
             hash[5] += f;
             hash[6] += g;
             hash[7] += h;
+            
         }
         static void Sha256bin(byte[] input, uint in_len, byte[] output)
         {
@@ -508,11 +585,34 @@ namespace PCCE
             }
             Debug.Print(full);
         }
+
+        public static void PrintHex(uint[] array)
+        {
+            foreach (var value in array)
+            {
+                Debug.Print($"0x{value:X8} ");
+            }
+            Console.WriteLine();
+        }
+
         public static string UnixTimestampToDateTime(long unixTimestamp)
         {
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unixTimestamp);
             return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
         }
+
+        public static string CalculateHash(byte[] input)
+        {
+            var hash = SHA256.HashData(input);
+            return Convert.ToHexStringLower(hash);
+        }
+
+        public void EncryptOnly(byte[] fileBytes)
+        {
+            decryptBytes = new byte[fileBytes.Length];
+            Array.Copy(fileBytes, decryptBytes, fileBytes.Length);
+        }
+
 
         public async Task Decrypt(byte[] fileBytes)
         {
@@ -530,6 +630,7 @@ namespace PCCE
             CompleteTicketsLocation = 0;
             GoldTreatsLocation = 0;
             inventoryItemList?.Clear();
+            encryptBytes = null;
 
             decryptBytes = new byte[fileBytes.Length];
 
@@ -546,7 +647,8 @@ namespace PCCE
             await Task.Run(() =>
             {
 
-                string calcedHash = Sha256(decryptBytes.Skip(68).ToArray(), (uint)(decryptBytes.Length - 68));
+                //string calcedHash = Sha256(decryptBytes.Skip(68).ToArray(), (uint)(decryptBytes.Length - 68));
+                string calcedHash = CalculateHash(decryptBytes.Skip(68).ToArray());
                 if (Encoding.ASCII.GetString(decryptBytes, 4, 64) != calcedHash)
                 {
                     //Debug.Print("Hash mismatch! Aborting as a precaution.");
@@ -566,7 +668,7 @@ namespace PCCE
                 int k = 0;
                 while (offset + 24 <= decryptBytes.Length)
                 {
-                    LoadProgress = (float)(offset / (decryptBytes.Length * 0.15));
+                    //LoadProgress = (float)(offset / (decryptBytes.Length * 0.15) - 0.4);
 
                     if (Encoding.ASCII.GetString(decryptBytes, offset, 4) != "C4SI") break;
                     int keyLen = (int)Ntohl(BitConverter.ToUInt32(decryptBytes, offset + 4));
@@ -764,44 +866,44 @@ namespace PCCE
                     if (entryCount >= 1 && vTable[2] != 0)
                     {
                         UserID = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[2]).ToArray(), 0);
-                        //Debug.Print("  ID = {0}", UserID);
+                        Debug.Print("  ID = {0}", UserID);
                     }
                     if (entryCount >= 2 && vTable[3] != 0)
                     {
                         Birthday = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[3]).ToArray(), 0);
-                        //Debug.Print("  Birthday = {0}", Birthday);
+                        Debug.Print("  Birthday = {0}", Birthday);
                     }
-                    if (entryCount >= 3)
+                    if (entryCount >= 3 && vTable[4] != 0)
                     {
                         BellsLocation = (int)profileOffset + rootTableLocation + vTable[4];
                         Bells = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[4]).ToArray(), 0);
-                        //Debug.Print("  Bells = {0}", Bells);
+                        Debug.Print("  Bells = {0}", Bells);
                     }
                     if (entryCount >= 4 && vTable[5] != 0)
                     {
                         Exp = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[5]).ToArray(), 0);
-                        //Debug.Print("  Exp = {0}", Exp); 
+                        Debug.Print("  Exp = {0}", Exp); 
                     }
                     if (entryCount >= 5 && vTable[6] != 0)
                     {
                         RegisteredAt = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[6]).ToArray(), 0);
-                        //Debug.Print("  RegisteredAt = {0}", RegisteredAt);
+                        Debug.Print("  RegisteredAt = {0}", RegisteredAt);
                     }
                     if (entryCount >= 6 && vTable[7] != 0)
                     {
                         DealerCarLimit = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[7]).ToArray(), 0);
-                        //Debug.Print("  DealerCarLimit = {0}", DealerCarLimit);
+                        Debug.Print("  DealerCarLimit = {0}", DealerCarLimit);
                     }
                     if (entryCount >= 7 && vTable[8] != 0)
                     {
                         MagicNumber = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[8]).ToArray(), 0);
-                        //Debug.Print("  MagicNumber = {0}", MagicNumber); 
+                        Debug.Print("  MagicNumber = {0}", MagicNumber); 
                     }
-                    if (entryCount >= 8)
+                    if (entryCount >= 8 && vTable[9] != 0)
                     {
                         NewLeafTicketsLocation = (int)profileOffset + rootTableLocation + vTable[9];
                         NewLeafTickets = BitConverter.ToUInt32(theProfile.Skip(rootTableLocation + vTable[9]).ToArray(), 0);
-                        //Debug.Print("  NewLeafTickets = {0}", NewLeafTickets);
+                        Debug.Print("  NewLeafTickets = {0}", NewLeafTickets);
                     }
 
                     if (PlayerItemView != null)
@@ -813,10 +915,11 @@ namespace PCCE
             });
         }
 
-        public byte[]? Encrypt()
+        public async Task<bool> Encrypt(bool skipEncrypt)
         {
-            if (decryptBytes == null) return null;
+            if (decryptBytes == null) return false;
 
+            
             if (BellsLocation != 0)
             {
                 byte[] bellsByte = Utilities.UintToBytes(Bells);
@@ -838,34 +941,48 @@ namespace PCCE
                 byte[] goldTreatsByte = UShortToBytes(GoldTreats);
                 Array.Copy(goldTreatsByte, 0, decryptBytes, GoldTreatsLocation, 2);
             }
+            
 
-            if (inventoryItemList != null)
+            encryptBytes = new byte[decryptBytes.Length];
+
+            await Task.Run(() =>
             {
-                for (int i = 0; i < inventoryItemList.Count; i++)
+                if (inventoryItemList != null)
                 {
-                    if (inventoryItemList[i].HasChanged)
+                    for (int i = 0; i < inventoryItemList.Count; i++)
                     {
-                        byte[] newItemID = Utilities.UintToBytes(inventoryItemList[i].ItemID);
-                        Array.Copy(newItemID, 0, decryptBytes, inventoryItemList[i].IDLocation, 4);
-                        byte[] newItemNum = UShortToBytes(inventoryItemList[i].ItemNum);
-                        Array.Copy(newItemNum, 0, decryptBytes, inventoryItemList[i].NumLocation, 2);
-                        /*byte[] newDate = UintToBytes(1617267600);
-                        Array.Copy(newDate, 0, decryptBytes, inventoryItemList[i].DateLocation, 4);*/
+                        if (inventoryItemList[i].HasChanged)
+                        {
+                            byte[] newItemID = Utilities.UintToBytes(inventoryItemList[i].ItemID);
+                            Array.Copy(newItemID, 0, decryptBytes, inventoryItemList[i].IDLocation, 4);
+                            byte[] newItemNum = UShortToBytes(inventoryItemList[i].ItemNum);
+                            Array.Copy(newItemNum, 0, decryptBytes, inventoryItemList[i].NumLocation, 2);
+                            /*byte[] newDate = UintToBytes(1617267600);
+                            Array.Copy(newDate, 0, decryptBytes, inventoryItemList[i].DateLocation, 4);*/
+                        }
                     }
                 }
-            }
 
-            //Debug.Print("Patching hash...");
-            string newHash = Sha256(decryptBytes.Skip(68).ToArray(), (uint)(decryptBytes.Length - 68));
-            Array.Copy(Encoding.ASCII.GetBytes(newHash), 0, decryptBytes, 4, 64);
+                //Debug.Print("Patching hash...");
+                //string newHash = Sha256(decryptBytes.Skip(68).ToArray(), (uint)(decryptBytes.Length - 68));
+                string newHash = CalculateHash(decryptBytes.Skip(68).ToArray());
+                Array.Copy(Encoding.ASCII.GetBytes(newHash), 0, decryptBytes, 4, 64);
 
-            //Console.WriteLine("Re-encrypting...");
-            for (int i = 0; i < decryptBytes.Length; ++i)
-            {
-                decryptBytes[i] ^= xorKey[i % 999];
-            }
+                //Console.WriteLine("Re-encrypting...");
+                if(!skipEncrypt)
+                {
+                    for (int i = 0; i < decryptBytes.Length; ++i)
+                    {
+                        encryptBytes[i] = (byte)(decryptBytes[i] ^ xorKey[i % 999]);
+                    }
+                }
+                else
+                {
+                    Array.Copy(decryptBytes, encryptBytes, decryptBytes.Length);
+                }
+            });
 
-            return decryptBytes;
+            return true;
         }
     }
 }

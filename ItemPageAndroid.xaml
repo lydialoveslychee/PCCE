@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:PCCE.Model"
+             xmlns:viewmodel="clr-namespace:PCCE.ViewModel"
+             xmlns:local="clr-namespace:PCCE"
+             x:DataType="viewmodel:ItemViewModel"
+             x:Class="PCCE.ItemPageAndroid"     
+             Shell.FlyoutBehavior="Disabled">
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="#7289da" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+        <local:ColorChangedConverter x:Key="colorChangedConverter" />
+    </ContentPage.Resources>
+    <Grid RowDefinitions="auto,*, 70"
+          ColumnDefinitions=".30*,.20*,.2*,.2*"
+          >
+        <Entry Grid.ColumnSpan="4"
+               x:Name="SearchEntry"
+               Placeholder="Search..."
+               MaxLength="40"
+               FontSize="0"
+               HorizontalOptions="FillAndExpand"
+               ClearButtonVisibility="WhileEditing"
+               TextChanged="SearchEntry_TextChanged"
+               />
+        <CollectionView x:Name="ItemCollectionView"
+                        Grid.Row="1" 
+                        Grid.ColumnSpan="4"
+                        ItemsSource="{Binding InventoryItems}"
+                        SelectionMode="Single"
+                        SelectionChanged="CollectionView_SelectionChanged"
+                        SelectedItem="{Binding ItemSelected}"
+                        >
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:InventoryItem">
+                    <Grid Padding="10,1">
+                        <Border>
+                            <Grid Padding="0" ColumnDefinitions="75,*,0.7*,0.15*">
+                                <Image Aspect="AspectFill" Source="{Binding ItemImage}"/>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    VerticalOptions="Center"
+                                    Padding="0">
+                                    <Label Text="{Binding ItemIName}" FontSize="14"/>
+                                    <Label Text="{Binding ItemID, StringFormat='Item ID : {0}'}" FontSize="12"/>
+                                    <Label Text="{Binding ItemNum, StringFormat='Quantity : {0}'}" FontSize="12"/>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout
+                                    Grid.Column="2"
+                                    VerticalOptions="Center"
+                                    Padding="0">
+                                    <Label Text="{Binding ItemDisplayName}" FontSize="14"/>
+                                    <Label Text="{Binding NormalDate, StringFormat='Date : {0}'}" FontSize="10" TextColor="SlateGray"/>
+                                    <Label Text="{Binding GUID, StringFormat='GUID : {0}'}" FontSize="10" TextColor="SlateGray"/>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout
+                                    Grid.Column="3"
+                                    VerticalOptions="Center"
+                                    Padding="0">
+                                    <Label Text="{Binding IsChecked, StringFormat='C : {0}'}" FontSize="10" TextColor="Gray"/>
+                                    <Label Text="{Binding IsLock, StringFormat='L : {0}'}" FontSize="10" TextColor="Gray"/>
+                                    <Label Text="{Binding PutPlace, StringFormat='P : {0}'}" FontSize="10" TextColor="{Binding PutPlace,Converter={StaticResource colorChangedConverter}}"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label x:Name="HintIName"
+               Grid.Row="2"
+               Grid.Column="0"
+               Margin="0,5"
+               TextColor="Gray"
+               FontSize="8"
+               HorizontalOptions="FillAndExpand"
+               HorizontalTextAlignment="End"
+               VerticalTextAlignment="End"/>
+
+        <Label x:Name="HintDisplayName"
+               Grid.Row="2"
+               Grid.Column="0"
+               Margin="0,5"
+               TextColor="Gray"
+               FontSize="8"
+               HorizontalOptions="FillAndExpand"
+               HorizontalTextAlignment="End"
+               VerticalTextAlignment="Start"/>
+
+        <Entry x:Name="ItemIDEntry"
+               Grid.Row="2"
+               Grid.Column="0"
+               Margin="10,10"
+               Placeholder="Item ID"
+               BackgroundColor="Transparent"
+               MaxLength="9"
+               FontSize="20"
+               Keyboard="Numeric"
+               Text="{Binding InputItemId}"
+               HorizontalOptions="FillAndExpand"
+               TextChanged="ItemIDEntry_TextChanged"
+                />
+
+        <Entry x:Name="ItemNumberEntry"
+               Grid.Row="2"
+               Grid.Column="1"
+               Margin="5,10"
+               Placeholder="Quantity"
+               MaxLength="5"
+               FontSize="20"
+               Keyboard="Numeric"
+               Text="{Binding InputItemNum}"
+               HorizontalOptions="FillAndExpand"
+               TextChanged="ItemNumberEntry_TextChanged"
+                />
+
+        <Button Grid.Row="2"
+                Grid.Column="2"
+                Margin="5,10"
+                FontSize="20"
+                x:Name="SetBtn"
+                Text="Set" 
+                TextColor="White"
+                Command="{Binding SetCommand}"
+                Clicked="SetBtn_Clicked"
+                HorizontalOptions="Fill" 
+                />
+        
+        <Button Grid.Row="2"
+                Grid.Column="3"
+                Margin="5,10"
+                FontSize="15"
+                x:Name="LookupBtn"
+                Text="Lookup"
+                TextColor="White"
+                Command="{Binding LookupCommand}"
+                HorizontalOptions="Fill"
+                />
+    </Grid>
+</ContentPage>

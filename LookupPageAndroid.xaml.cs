@@ -3,11 +3,12 @@ using PCCE.ViewModel;
 
 namespace PCCE;
 
-public partial class LookupPage : ContentPage
+public partial class LookupPageAndroid : ContentPage
 {
     readonly LookupViewModel viewModel;
     //int incomingIndex = 0;
-    public LookupPage(LookupViewModel vm)
+    
+    public LookupPageAndroid(LookupViewModel vm)
     {
         InitializeComponent();
         BindingContext = vm;
@@ -30,6 +31,7 @@ public partial class LookupPage : ContentPage
 
     private void LookupCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+
     }
 
     private void Incoming_TextChanged(object sender, TextChangedEventArgs e)
@@ -52,10 +54,7 @@ public partial class LookupPage : ContentPage
     private void ContentPage_Loaded(object sender, EventArgs e)
     {
         LookupCollectionView.ScrollTo(viewModel.ItemSelected, null, ScrollToPosition.Center, false);
-        /*
-        LookupCollectionView.ScrollTo(incomingIndex, -1, ScrollToPosition.Center, false);
-        LookupCollectionView.SelectedItem = 0;
-        viewModel.ItemSelected = null;
-        */
+        //LookupCollectionView.SelectedItem = 0;
+        //viewModel.ItemSelected = null;
     }
 }

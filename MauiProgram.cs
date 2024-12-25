@@ -23,8 +23,10 @@ namespace PCCE
             builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<ItemPage>();
+            builder.Services.AddSingleton<ItemPageAndroid>();
             builder.Services.AddSingleton<ItemViewModel>();
             builder.Services.AddSingleton<LookupPage>();
+            builder.Services.AddSingleton<LookupPageAndroid>();
             builder.Services.AddSingleton<LookupViewModel>();
 #if DEBUG
             builder.Logging.AddDebug();

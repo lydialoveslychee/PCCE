@@ -67,6 +67,7 @@ namespace PCCE.ViewModel
 
             ItemSelected.ItemIName = Utilities.GetItemIName(ItemSelected.ItemID);
             ItemSelected.ItemDisplayName = Utilities.GetItemDisplayName(ItemSelected.ItemID);
+            ItemSelected.SetImage();
             ItemSelected.HasChanged = true;
 
         }
@@ -75,9 +76,27 @@ namespace PCCE.ViewModel
         async Task Lookup()
         {
             if (string.IsNullOrEmpty(InputItemId))
-                await Shell.Current.GoToAsync(nameof(LookupPage));
+            {
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    await Shell.Current.GoToAsync(nameof(LookupPageAndroid));
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync(nameof(LookupPage));
+                }
+            }
             else
-                await Shell.Current.GoToAsync($"{nameof(LookupPage)}?ID={InputItemId}");
+            {
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    await Shell.Current.GoToAsync($"{nameof(LookupPageAndroid)}?ID={InputItemId}");
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync($"{nameof(LookupPage)}?ID={InputItemId}");
+                }
+            }
         }
     }
 }
