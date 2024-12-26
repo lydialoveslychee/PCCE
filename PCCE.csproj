@@ -189,7 +189,7 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="call RemoveLanguageFolder.bat $(OutputPath)" />
+	  <Exec Command="sh RemoveLanguageFolder.sh $(OutputPath)" />
 	</Target>
 
 </Project>
