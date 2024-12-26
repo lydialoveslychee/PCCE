@@ -164,6 +164,9 @@
 	  <MauiAsset Include="List\SpaUS.txt">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </MauiAsset>
+	  <MauiAsset Include="List\ExclusiveItemsID.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>

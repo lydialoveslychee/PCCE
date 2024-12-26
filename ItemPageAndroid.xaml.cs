@@ -103,4 +103,29 @@ public partial class ItemPageAndroid : ContentPage
     {
         //ItemCollectionView.ScrollTo(ItemCollectionView.SelectedItem, null, ScrollToPosition.Center, false);
     }
+
+    private async void OnChangeAllClicked(object sender, EventArgs e)
+    {
+        var answer = await DisplayAlert("Change All", "Are you sure you want to change all items?", "Yes", "No");
+        if (answer)
+        {
+            using var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync("List/ExclusiveItemIDs.txt");
+            using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
+            foreach (var item in iv.InventoryItems)
+            {
+                if (!exclusiveItemIDsReader.EndOfStream)
+                {
+                    string? exclusiveItemID = exclusiveItemIDsReader.ReadLine();
+                    if (exclusiveItemID != null)
+                    {
+                        item.ItemID = Utilities.ConvertToUint(exclusiveItemID);
+                    }、
+                    continue;    
+                }
+                exclusiveItemIDsReader.Close();
+                exclusiveItemIDsStream.Close();
+                break;
+            }
+        }
+    }
 }

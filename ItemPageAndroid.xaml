@@ -151,5 +151,16 @@
                 Command="{Binding LookupCommand}"
                 HorizontalOptions="Fill"
                 />
+
+        <Button Grid.Row="2"
+                Grid.Column="3"
+                Margin="5,10"
+                FontSize="15"
+                x:Name="ChangeAllBtn"
+                Text="ChangeAll"
+                TextColor="White"
+                Clicked="OnChangeAllClicked"
+                HorizontalOptions="Fill"
+                />
     </Grid>
 </ContentPage>
