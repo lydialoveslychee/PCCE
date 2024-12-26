@@ -109,22 +109,40 @@ public partial class ItemPageAndroid : ContentPage
         var answer = await DisplayAlert("Change All", "Are you sure you want to change all items?", "Yes", "No");
         if (answer)
         {
-            using var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync("List/ExclusiveItemIDs.txt");
-            using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
-            foreach (var item in iv.InventoryItems)
+            try
             {
-                if (!exclusiveItemIDsReader.EndOfStream)
+                using var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync("List/ExclusiveItemsID.txt");
+                using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
+                if (iv.InventoryItems == null)
                 {
-                    string? exclusiveItemID = exclusiveItemIDsReader.ReadLine();
-                    if (exclusiveItemID != null)
-                    {
-                        item.ItemID = Utilities.ConvertToUint(exclusiveItemID);
-                    }
-                    continue;    
+                    throw new Exception("InventoryItems is null");
                 }
-                exclusiveItemIDsReader.Close();
-                exclusiveItemIDsStream.Close();
-                break;
+                foreach (var item in iv.InventoryItems)
+                {
+                    if (item == null)
+                    {
+                        throw new Exception("An item in InventoryItems is null");
+                    }
+
+                    if (!exclusiveItemIDsReader.EndOfStream)
+                    {
+                        string? exclusiveItemID = exclusiveItemIDsReader.ReadLine();
+                        if (exclusiveItemID != null)
+                        {
+                            item.ItemID = Utilities.ConvertToUint(exclusiveItemID);
+                        }
+                    }
+                    else
+                    {
+                        exclusiveItemIDsReader.Close();
+                        exclusiveItemIDsStream.Close();
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
         }
     }
