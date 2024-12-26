@@ -119,7 +119,7 @@ public partial class ItemPageAndroid : ContentPage
                     if (exclusiveItemID != null)
                     {
                         item.ItemID = Utilities.ConvertToUint(exclusiveItemID);
-                    }、
+                    }
                     continue;    
                 }
                 exclusiveItemIDsReader.Close();
