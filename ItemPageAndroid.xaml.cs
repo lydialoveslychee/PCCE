@@ -104,46 +104,4 @@ public partial class ItemPageAndroid : ContentPage
         //ItemCollectionView.ScrollTo(ItemCollectionView.SelectedItem, null, ScrollToPosition.Center, false);
     }
 
-    private async void OnChangeAllClicked(object sender, EventArgs e)
-    {
-        var answer = await DisplayAlert("Change All", "Are you sure you want to change all items?", "Yes", "No");
-        if (answer)
-        {
-            try
-            {
-                using var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync("List/ExclusiveItemsID.txt");
-                using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
-                if (iv.InventoryItems == null)
-                {
-                    throw new Exception("InventoryItems is null");
-                }
-                foreach (var item in iv.InventoryItems)
-                {
-                    if (item == null)
-                    {
-                        throw new Exception("An item in InventoryItems is null");
-                    }
-
-                    if (!exclusiveItemIDsReader.EndOfStream)
-                    {
-                        string? exclusiveItemID = exclusiveItemIDsReader.ReadLine();
-                        if (exclusiveItemID != null)
-                        {
-                            item.ItemID = Utilities.ConvertToUint(exclusiveItemID);
-                        }
-                    }
-                    else
-                    {
-                        exclusiveItemIDsReader.Close();
-                        exclusiveItemIDsStream.Close();
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-            }
-        }
-    }
 }

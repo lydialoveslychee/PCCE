@@ -128,6 +128,7 @@ namespace PCCE
 
             AnimatedProgressBar.IsVisible = false;
             MoreButton.IsEnabled = true;
+            ChangeAllBtn.IsEnabled = true;
         }
 
         private async Task SaveFileAsync(bool skipEncrypt)
@@ -239,6 +240,7 @@ namespace PCCE
             CompleteTicketsEntry.IsEnabled = false;
             GoldTreatsEntry.IsEnabled = false;
             MoreButton.IsEnabled = false;
+            ChangeAllBtn.IsEnabled = false;
             //AnimatedProgressBar.Progress = 0;
 
             await LoadFileAsync(result);
@@ -265,6 +267,7 @@ namespace PCCE
             CompleteTicketsEntry.IsEnabled = false;
             GoldTreatsEntry.IsEnabled = false;
             MoreButton.IsEnabled = false;
+            ChangeAllBtn.IsEnabled = false;
 
             AnimatedProgressBar.IsVisible = true;
 
@@ -373,6 +376,59 @@ namespace PCCE
             U.EncryptOnly(fileBytes);
 
             await SaveFileAsync(false);
+        }
+
+        private async void OnChangeAllClicked(object sender, EventArgs e)
+        {
+            var answer = await DisplayAlert("Change All", "Are you sure you want to change all items?", "Yes", "No");
+            var changedNum = 0;
+            if (answer)
+            {
+                try
+                {
+                    using var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync("List/ExclusiveItemsID.txt");
+                    using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
+                    if (Utilities.inventoryItemList == null)
+                    {
+                        throw new Exception("InventoryItems is null");
+                    }
+                    List<Model.InventoryItem> sorted = Utilities.inventoryItemList.OrderByDescending(d => d.ItemDate).ToList();
+
+                    for (int i = 0; i < sorted.Count; i++)
+                    {
+                        if (sorted[i] == null)
+                        {
+                            throw new Exception("An item in InventoryItems is null");
+                        }
+
+                        if (!exclusiveItemIDsReader.EndOfStream)
+                        {
+                            string? exclusiveItemID = exclusiveItemIDsReader.ReadLine();
+                            if (exclusiveItemID != null)
+                            {
+                                sorted[i].ItemID = Utilities.ConvertToUint(exclusiveItemID);
+                                sorted[i].ItemNum = 1;
+                                sorted[i].ItemIName = Utilities.GetItemIName(sorted[i].ItemID);   
+                                sorted[i].ItemDisplayName = Utilities.GetItemDisplayName(sorted[i].ItemID);   
+                                sorted[i].SetImage();
+                                sorted[i].HasChanged = true;
+                                changedNum++;
+                            }
+                        }
+                        else
+                        {
+                            exclusiveItemIDsReader.Close();
+                            exclusiveItemIDsStream.Close();
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                }
+            }
+            await DisplayAlert("Success", changedNum + " items have been changed!", "OK");
         }
     }
 

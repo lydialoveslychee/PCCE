@@ -207,17 +207,27 @@
                 </x:Array>
             </Picker.ItemsSource>
         </Picker>
-        
+
         <Button Grid.Row="6"
                 Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="10"
+                Margin="10,10"
+                x:Name="ChangeAllBtn"
+                Text="ChangeAll"
+                TextColor="White"
+                Clicked="OnChangeAllClicked"
+                IsEnabled="false"
+                />
+        
+        <Button Grid.Row="6"
+                Grid.Column="1"
+                Margin="10,10"
                 x:Name="MoreButton"
                 Text="More"
                 TextColor="White"
                 IsEnabled="false"
                 Clicked="MoreButton_Clicked"
                 />
+
     </Grid>
 
 </ContentPage>
