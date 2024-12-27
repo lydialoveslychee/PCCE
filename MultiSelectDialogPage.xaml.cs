@@ -15,7 +15,7 @@ namespace PCCE
 
         private void OnSelectAllButtonClicked(object sender, EventArgs e)
         {
-            bool selectAll = SelectAllButton.Text == "Select All";
+            bool selectAll = SelectAllButton.Text == "Select All (404)";
 
             ChocolateBarCheckBox.IsChecked = selectAll;
             EeveeCheckBox.IsChecked = selectAll;
@@ -28,8 +28,9 @@ namespace PCCE
             SousouCheckBox.IsChecked = selectAll;
             Splatoon2CheckBox.IsChecked = selectAll;
             SuperMarioCheckBox.IsChecked = selectAll;
+            NyoCheckBox.IsChecked = selectAll;
 
-            SelectAllButton.Text = selectAll ? "Unselect All" : "Select All";
+            SelectAllButton.Text = selectAll ? "Unselect All" : "Select All (404)";
             SelectAllButton.BackgroundColor = selectAll ? Colors.LightGrey : Colors.Blue;
         }
 
@@ -46,6 +47,7 @@ namespace PCCE
             if (SousouCheckBox.IsChecked) SelectedExclusiveTypes.Add("Sousou");
             if (Splatoon2CheckBox.IsChecked) SelectedExclusiveTypes.Add("Splatoon2");
             if (SuperMarioCheckBox.IsChecked) SelectedExclusiveTypes.Add("SuperMario");
+            if (NyoCheckBox.IsChecked) SelectedExclusiveTypes.Add("NewYearOmikugi");
 
             await Navigation.PopModalAsync();
         }

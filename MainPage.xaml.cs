@@ -7,7 +7,7 @@ namespace PCCE
     public partial class MainPage : ContentPage
     {
         readonly string WindowsVersion = "v3.4";
-        readonly string AndroidVersion = "v2.0";
+        readonly string AndroidVersion = "v2.1";
 
         readonly Utilities U = new();
         readonly IFileSaver fileSaver;
@@ -398,11 +398,7 @@ namespace PCCE
                     await DisplayAlert("Nothing Happened", "No items changed", "OK");
                     return;
                 }
-                var answer = await DisplayAlert("You are going to change the following types", string.Join("\n", selectedExclusiveTypes), "I have enough items", "Cancel");
-                if (!answer)
-                {
-                    return;
-                }
+
                 var exclusiveItemIDs = new List<string>();
                 foreach (var type in selectedExclusiveTypes)
                 {
@@ -417,6 +413,12 @@ namespace PCCE
                     }
                     exclusiveItemIDsReader.Close();
                     exclusiveItemIDsStream.Close();
+                }
+
+                var answer = await DisplayAlert("You are going to change the following types (" + exclusiveItemIDs.Count + " items required)", string.Join("\n", selectedExclusiveTypes), "I have enough items", "Cancel");
+                if (!answer)
+                {
+                    return;
                 }
 
                 if (Utilities.inventoryItemList == null)

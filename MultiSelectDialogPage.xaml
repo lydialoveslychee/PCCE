@@ -2,67 +2,86 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PCCE.MultiSelectDialogPage">
     <StackLayout Padding="10">
-        <Label Text="Select ExclusiveTypes:" FontAttributes="Bold" />
+        <Label Text="Avaliable Exclusive Types:" FontAttributes="Bold" />
         
         <HorizontalStackLayout>
             <CheckBox x:Name="ChocolateBarCheckBox" />
-            <Label Text="Chocolate Bar Gifts" VerticalOptions="Center" />
+            <Label Text="Chocolate Bar Gifts (10)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="EeveeCheckBox" />
-            <Label Text="Eevee Event Items" VerticalOptions="Center" />
+            <Label Text="Eevee Event Items (9)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="EndOfServiceCheckBox" />
-            <Label Text="End of Service Gifts" VerticalOptions="Center" />
+            <Label Text="End of Service Gifts (10)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="GlowingToyGiftsCheckBox" />
-            <Label Text="Glowing Toy Day Gifts" VerticalOptions="Center" />
+            <Label Text="Glowing Toy Day Gifts (10)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="GoogleEventCheckBox" />
-            <Label Text="Google Event Items" VerticalOptions="Center" />
+            <Label Text="Google Event Items (15)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="OtherExclusivesCheckBox" />
-            <Label Text="Other Exclusive Items" VerticalOptions="Center" />
+            <Label Text="Other Exclusive Items (75)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="SanrioCheckBox" />
-            <Label Text="Sanrio" VerticalOptions="Center" />
+            <Label Text="Sanrio (140)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="SeasonGreetingCheckBox" />
-            <Label Text="Season Greetings Gifts" VerticalOptions="Center" />
+            <Label Text="Season Greetings Gifts (3)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="SousouCheckBox" />
-            <Label Text="SOU Collection Event Items" VerticalOptions="Center" />
+            <Label Text="SOU Collection Event Items (28)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="Splatoon2CheckBox" />
-            <Label Text="Splatoon 2 Event Items" VerticalOptions="Center" />
+            <Label Text="Splatoon 2 Event Items (29)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
             <CheckBox x:Name="SuperMarioCheckBox" />
-            <Label Text="Super Mario Event Items" VerticalOptions="Center" />
+            <Label Text="Super Mario Event Items (38)" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout>
+            <CheckBox x:Name="NyoCheckBox" />
+            <Label Text="New Year Omikugi Gifts (37)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
-        <Button x:Name="SelectAllButton" Text="Select All" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="Blue"/>
-        <HorizontalStackLayout>
-            <Button Text="Cancel" Clicked="OnCancelButtonClicked" Margin="10,10" HorizontalOptions="Fill" />
-            <Button Text="OK" Clicked="OnOkButtonClicked" Margin="10,10" HorizontalOptions="Fill" />
-        </HorizontalStackLayout>
+        <Button x:Name="SelectAllButton" Text="Select All (404)" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="Blue"/>
+        <Grid RowDefinitions="Auto, Auto, Auto, Auto"
+              Grid.Row="1" 
+              Grid.ColumnSpan="2"
+              ColumnDefinitions=".50*,.50*" VerticalOptions="Fill"
+              >
+            <Button Text="Cancel" 
+                Grid.Row="0"
+                Grid.Column="0"
+                Clicked="OnCancelButtonClicked" 
+                Margin="10,10" 
+                HorizontalOptions="Fill" />
+            <Button Text="OK" 
+                Grid.Row="0"
+                Grid.Column="1"
+                Clicked="OnOkButtonClicked" 
+                Margin="10,10" 
+                HorizontalOptions="Fill" />
+        </Grid>
     </StackLayout>
 </ContentPage>
