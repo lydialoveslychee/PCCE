@@ -59,10 +59,10 @@
             <Label Text="Super Mario Event Items" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
-        <Button x:Name="SelectAllButton" Text="Select All" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="LightBlue"/>
+        <Button x:Name="SelectAllButton" Text="Select All" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="Blue"/>
         <HorizontalStackLayout>
-            <Button Text="Cancel" Clicked="OnCancelButtonClicked" Margin="10,10" />
-            <Button Text="OK" Clicked="OnOkButtonClicked" Margin="10,10" />
+            <Button Text="Cancel" Clicked="OnCancelButtonClicked" Margin="10,10" HorizontalOptions="Fill" />
+            <Button Text="OK" Clicked="OnOkButtonClicked" Margin="10,10" HorizontalOptions="Fill" />
         </HorizontalStackLayout>
     </StackLayout>
 </ContentPage>

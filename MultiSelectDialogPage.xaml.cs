@@ -30,7 +30,7 @@ namespace PCCE
             SuperMarioCheckBox.IsChecked = selectAll;
 
             SelectAllButton.Text = selectAll ? "Unselect All" : "Select All";
-            SelectAllButton.BackgroundColor = selectAll ? Colors.LightGrey : Colors.LightBlue;
+            SelectAllButton.BackgroundColor = selectAll ? Colors.LightGrey : Colors.Blue;
         }
 
         private async void OnOkButtonClicked(object sender, EventArgs e)
