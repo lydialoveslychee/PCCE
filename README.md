@@ -14,12 +14,12 @@ An updated version of the PCCE app. You can find the original app here: https://
 
    Please refer to [All the Exclusive Items](/List/ExclusiveItems/ExclusiveItemsID.txt)
 
-## Donataion
-
-If you are considering donation please keep in mind that the donation doesn't get you anything other than my love. 
-* https://ko-fi.com/myshilingstar
-* https://www.paypal.me/myshilingstar
-
 ## Warranty Disclaimer
 
 This version is only imcompletely tested in Android Version, please make sure that you have backed up your file before using it.
+
+## Donataion
+
+If you are considering donation please keep in mind that the donation doesn't get you anything other than my love. 
+
+![Wechat Donation QR Code](donationQR.jpg)
