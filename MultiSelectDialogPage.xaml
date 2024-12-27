@@ -1,0 +1,68 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PCCE.MultiSelectDialogPage">
+    <StackLayout Padding="10">
+        <Label Text="Select ExclusiveTypes:" FontAttributes="Bold" />
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="ChocolateBarCheckBox" />
+            <Label Text="Chocolate Bar Gifts" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="EeveeCheckBox" />
+            <Label Text="Eevee Event Items" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="EndOfServiceCheckBox" />
+            <Label Text="End of Service Gifts" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="GlowingToyGiftsCheckBox" />
+            <Label Text="Glowing Toy Day Gifts" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="GoogleEventCheckBox" />
+            <Label Text="Google Event Items" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="OtherExclusivesCheckBox" />
+            <Label Text="Other Exclusive Items" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="SanrioCheckBox" />
+            <Label Text="Sanrio" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="SeasonGreetingCheckBox" />
+            <Label Text="Season Greetings Gifts" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="SousouCheckBox" />
+            <Label Text="SOU Collection Event Items" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="Splatoon2CheckBox" />
+            <Label Text="Splatoon 2 Event Items" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <CheckBox x:Name="SuperMarioCheckBox" />
+            <Label Text="Super Mario Event Items" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <Button x:Name="SelectAllButton" Text="Select All" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="LightBlue"/>
+        <HorizontalStackLayout>
+            <Button Text="Cancel" Clicked="OnCancelButtonClicked" Margin="10,10" />
+            <Button Text="OK" Clicked="OnOkButtonClicked" Margin="10,10" />
+        </HorizontalStackLayout>
+    </StackLayout>
+</ContentPage>

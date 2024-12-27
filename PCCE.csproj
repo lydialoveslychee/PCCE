@@ -164,9 +164,14 @@
 	  <MauiAsset Include="List\SpaUS.txt">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </MauiAsset>
-	  <MauiAsset Include="List\ExclusiveItemsID.txt">
+	  
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Include="List\ExclusiveItems\*.txt">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </MauiAsset>
+	
 	</ItemGroup>
 
 	<ItemGroup>
@@ -179,6 +184,12 @@
 	  </Compile>
 	  <Compile Update="LookupPageAndroid.xaml.cs">
 	    <DependentUpon>LookupPageAndroid.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="MultiSelectDialogPage.xaml.cs">
+	    <DependentUpon>MultiSelectDialogPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
