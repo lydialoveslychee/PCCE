@@ -328,6 +328,7 @@
 1801062  tops_2730_shirts_cmps
 1801063  btms_2730_girl_cmps
 1801064  btms_2730_boy_cmps
+1801024  int_oth_trophy_fA_FE06
 1801025  int_2690_bunker1_cmps
 1801026  int_2690_bunker2_cmps
 1801027  int_2680_respawn1_cmps
@@ -386,6 +387,7 @@
 1301002  int_smb_flagpole
 1301003  int_smb_Fbar
 1300045  tops_nin_lilbros
+1201014  car_rug_square_3040_cmps
 
 New Year Omikugi gifts
 4003023 int_all16_daikichi_cmps

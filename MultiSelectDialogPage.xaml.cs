@@ -15,7 +15,7 @@ namespace PCCE
 
         private void OnSelectAllButtonClicked(object sender, EventArgs e)
         {
-            bool selectAll = SelectAllButton.Text == "Select All (404)";
+            bool selectAll = SelectAllButton.Text == "Select All (406)";
 
             ChocolateBarCheckBox.IsChecked = selectAll;
             EeveeCheckBox.IsChecked = selectAll;
@@ -30,7 +30,7 @@ namespace PCCE
             SuperMarioCheckBox.IsChecked = selectAll;
             NyoCheckBox.IsChecked = selectAll;
 
-            SelectAllButton.Text = selectAll ? "Unselect All" : "Select All (404)";
+            SelectAllButton.Text = selectAll ? "Unselect All" : "Select All (406)";
             SelectAllButton.BackgroundColor = selectAll ? Colors.LightGrey : Colors.Blue;
         }
 

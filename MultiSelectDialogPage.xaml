@@ -36,7 +36,7 @@
         
         <HorizontalStackLayout>
             <CheckBox x:Name="SanrioCheckBox" />
-            <Label Text="Sanrio (140)" VerticalOptions="Center" />
+            <Label Text="Sanrio (141)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
@@ -51,7 +51,7 @@
         
         <HorizontalStackLayout>
             <CheckBox x:Name="Splatoon2CheckBox" />
-            <Label Text="Splatoon 2 Event Items (29)" VerticalOptions="Center" />
+            <Label Text="Splatoon 2 Event Items (30)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
         <HorizontalStackLayout>
@@ -64,7 +64,7 @@
             <Label Text="New Year Omikugi Gifts (37)" VerticalOptions="Center" />
         </HorizontalStackLayout>
         
-        <Button x:Name="SelectAllButton" Text="Select All (404)" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="Blue"/>
+        <Button x:Name="SelectAllButton" Text="Select All (406)" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="Blue"/>
         <Grid RowDefinitions="Auto, Auto, Auto, Auto"
               Grid.Row="1" 
               Grid.ColumnSpan="2"
