@@ -8,16 +8,21 @@ namespace PCCE
     {
         public List<string> SelectedExclusive { get; private set; } = new List<string>();
 
-        public List<Model.SelectionTreeNode> TreeNodes {get; set; } = new List<Model.SelectionTreeNode>
-        {
-            new() {
-                Name = "ExclusiveTypes"
-            }
-        };
+        public List<Model.SelectionTreeNode> TreeNodes {get; set; } = new List<Model.SelectionTreeNode>();
+        
         public MultiSelectDialogPage()
         {
+            BindingContext = this;
+            TreeNodes =
+            [
+                new Model.SelectionTreeNode 
+                {
+                    Name = "ExclusiveTypes"
+                }
+            ];
             InitializeComponent();
         }
+
 
         private async void OnOkButtonClicked(object sender, EventArgs e)
         {

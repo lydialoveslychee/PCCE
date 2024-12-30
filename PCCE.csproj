@@ -190,8 +190,6 @@
 	<ItemGroup>
 	  <Compile Update="MultiSelectDialogPage.xaml.cs">
 	    <DependentUpon>MultiSelectDialogPage.xaml</DependentUpon>
-	  </Compile><Compile Update="TreeNodeTemplate.xaml.cs">
-	    <DependentUpon>TreeNodeTemplate.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 

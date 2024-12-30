@@ -4,26 +4,57 @@
              xmlns:model="clr-namespace:PCCE.Model"
              xmlns:local="clr-namespace:PCCE"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
-    <Grid RowDefinitions="Auto, *, 70"
+    <Grid RowDefinitions="*, 70"
           ColumnDefinitions=".50*,.50*"
           >
-        <Label Text="Avaliable Exclusion Items:" FontAttributes="Bold" />
         
-        <CollectionView x:Name="TreeView" ItemsSource="{Binding TreeNodes}">
+        <CollectionView 
+            x:Name="TreeView" 
+            ItemsSource="{Binding TreeNodes}"
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Margin="10">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <toolkit:Expander>
+                <DataTemplate 
+                    x:DataType="model:SelectionTreeNode">
+                    <toolkit:Expander
+                        IsExpanded="True">
                         <toolkit:Expander.Header>
                             <HorizontalStackLayout>
-                                <CheckBox IsChecked="{Binding IsChecked}" />
-                                <Label Text="{Binding Name}" VerticalOptions="Center" />
+                                <CheckBox x:Name="{Binding Name}" IsChecked="{Binding IsChecked}" Color="Blue" />
+                                <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
                             </HorizontalStackLayout>
                         </toolkit:Expander.Header>
                         <toolkit:Expander.Content>
-                            <CollectionView ItemsSource="{Binding Children}">
+                            <CollectionView
+                                Margin="10" 
+                                ItemsSource="{Binding Children}">
                                 <CollectionView.ItemTemplate>
-                                    <DataTemplate>
-                                        <local:TreeNodeTemplate />
+                                    <DataTemplate
+                                        x:DataType="model:SelectionTreeNode">
+                                        <toolkit:Expander>
+                                            <toolkit:Expander.Header>
+                                                <HorizontalStackLayout>
+                                                    <CheckBox x:Name="{Binding Name}" IsChecked="{Binding IsChecked}" Color="Green"/>
+                                                    <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
+                                                </HorizontalStackLayout>
+                                            </toolkit:Expander.Header>
+                                            <toolkit:Expander.Content>
+                                                <CollectionView 
+                                                    Margin="10"
+                                                    ItemsSource="{Binding Children}">
+                                                    <CollectionView.ItemTemplate>
+                                                        <DataTemplate
+                                                            x:DataType="model:SelectionTreeNode">
+                                                            <HorizontalStackLayout>
+                                                                <CheckBox x:Name="{Binding Name}" IsChecked="{Binding IsChecked}" Color="DeepPink"/>
+                                                                <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
+                                                            </HorizontalStackLayout>
+                                                        </DataTemplate>
+                                                    </CollectionView.ItemTemplate>
+                                                </CollectionView>
+                                            </toolkit:Expander.Content>
+                                        </toolkit:Expander>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
@@ -34,13 +65,13 @@
         </CollectionView>
         
         <Button Text="Cancel" 
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.Column="0"
             Clicked="OnCancelButtonClicked" 
             Margin="10,10" 
             HorizontalOptions="Fill" />
         <Button Text="OK" 
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.Column="1"
             Clicked="OnOkButtonClicked" 
             Margin="10,10" 

@@ -1,12 +1,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Xamarin.Google.Crypto.Tink.Signature;
 
 namespace PCCE.Model
 {
-    public class SelectionTreeNode
+    public class SelectionTreeNode : INotifyPropertyChanged
     {
-        private bool _isChecked;
+        private bool _isChecked = false;
+
+        public int Count {get; set; } = -1;
 
         public string DisplayName { get; set; } = string.Empty;
 
@@ -20,6 +24,7 @@ namespace PCCE.Model
                 _name = value;
                 if (!string.IsNullOrEmpty(value))
                 {
+                    Console.WriteLine("Tree Node Name: " + value);
                     LoadNameAsync(value);
                 }
             } 
@@ -27,43 +32,44 @@ namespace PCCE.Model
 
         private async void LoadNameAsync(string value)
         {
-            var ListFilePath = "List/" + value + ".txt";
-            if (File.Exists(ListFilePath))
-            {
+            string ListFilePath = "List/ExclusiveItems/" + value + ".txt";
+            Console.WriteLine("ListFilePath: " + ListFilePath);
+            try {
                 var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync(ListFilePath);
                 using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
-                int count = -1;
                 while (!exclusiveItemIDsReader.EndOfStream)
                 {
                     var line = exclusiveItemIDsReader.ReadLine();
                     if (line != null)
                     {
-                        if (count == -1)
+                        if (Count == -1)
                         {
                             DisplayName = line;
+                            Count = 0;
                         }
                         else
                         {
-                            Children.Add(new SelectionTreeNode { Name = line });    
+                            SelectionTreeNode child = new() { Name = line, Parent = this };
+                            Children.Add(child);    
+                            Count += child.Count;
                         }
-                        count++;
                     }
                 }
-                DisplayName = DisplayName + " (" + count + ")";
+                DisplayName = DisplayName + " (" + Count + ")";
                 exclusiveItemIDsReader.Close();
                 exclusiveItemIDsStream.Close();
-            }
-            else
-            {   
-                if(Utilities.DisplayNameDictionary.TryGetValue(value, out string displayName))
+            } catch (Exception e) {
+                Console.WriteLine("Exception: " + e.Message);
+                if(Utilities.DisplayNameDict.TryGetValue(Utilities.ConvertToUint(value), out string? displayName))
                 {   
                     DisplayName = displayName;
                 }
                 else
                 {
-                    Utilities.iNameDictictionary.TryGetValue(value, out string displayName);
-                    DisplayName = displayName;
+                    Utilities.iNameDict.TryGetValue(Utilities.ConvertToUint(value), out string? iName);
+                    DisplayName = iName ?? value;
                 }
+                Count = 1;
             }
         }
 
@@ -79,8 +85,9 @@ namespace PCCE.Model
                 if (_isChecked != value)
                 {
                     _isChecked = value;
-                    UpdateParentCheckState();
                     UpdateChildrenCheckState(value);
+                    UpdateParentCheckState();
+                    OnPropertyChanged(nameof(IsChecked));
                 }
             }
         }
@@ -89,7 +96,13 @@ namespace PCCE.Model
         {
             if (Parent != null)
             {
-                Parent.IsChecked = Parent.Children.All(x => x.IsChecked);
+                bool allChecked = Parent.Children.All(x => x.IsChecked);
+                bool allUnchecked = Parent.Children.All(x => !x.IsChecked);
+
+                if (allChecked || allUnchecked)
+                {
+                    Parent.IsChecked = allChecked;
+                }
             }
         }
 
@@ -102,6 +115,13 @@ namespace PCCE.Model
                     child.IsChecked = isChecked;
                 }
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
