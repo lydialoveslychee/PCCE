@@ -391,31 +391,15 @@ namespace PCCE
                 multiSelectDialogPage.Disappearing += (s, e) => tcs.SetResult(true);
                 await tcs.Task;
 
-                var selectedExclusiveTypes = multiSelectDialogPage.SelectedExclusiveTypes;
+                var selectedExclusive = multiSelectDialogPage.SelectedExclusive;
 
-                if (selectedExclusiveTypes.Count == 0)
+                if (selectedExclusive.Count == 0)
                 {
                     await DisplayAlert("Nothing Happened", "No items changed", "OK");
                     return;
                 }
 
-                var exclusiveItemIDs = new List<string>();
-                foreach (var type in selectedExclusiveTypes)
-                {
-                    var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync($"List/ExclusiveItems/" + type + ".txt");
-                    using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
-                    while(!exclusiveItemIDsReader.EndOfStream){
-                        string? exclusiveItemID = exclusiveItemIDsReader.ReadLine();
-                        if (exclusiveItemID != null)
-                        {
-                            exclusiveItemIDs.Add(exclusiveItemID);
-                        }
-                    }
-                    exclusiveItemIDsReader.Close();
-                    exclusiveItemIDsStream.Close();
-                }
-
-                var answer = await DisplayAlert("You are going to change the following types (" + exclusiveItemIDs.Count + " items required)", string.Join("\n", selectedExclusiveTypes), "I have enough items", "Cancel");
+                var answer = await DisplayAlert("Attention", "You are going to change " + selectedExclusive.Count + " items. Please make sure that you have enough unwanted items to replace.", "I have enough items", "Cancel");
                 if (!answer)
                 {
                     return;
@@ -427,7 +411,7 @@ namespace PCCE
                 }
                 List<Model.InventoryItem> sorted = Utilities.inventoryItemList.OrderByDescending(d => d.ItemDate).ToList();
 
-                for (int i = 0; i < exclusiveItemIDs.Count; i++)
+                for (int i = 0; i < selectedExclusive.Count; i++)
                 {
                     if (sorted.Count <= i)
                     {
@@ -437,7 +421,7 @@ namespace PCCE
                     {
                         throw new Exception("An item in InventoryItems is null");
                     }
-                    sorted[i].ItemID = Utilities.ConvertToUint(exclusiveItemIDs[i]);
+                    sorted[i].ItemID = Utilities.ConvertToUint(selectedExclusive[i]);
                     sorted[i].ItemNum = 1;
                     sorted[i].ItemIName = Utilities.GetItemIName(sorted[i].ItemID);   
                     sorted[i].ItemDisplayName = Utilities.GetItemDisplayName(sorted[i].ItemID);   

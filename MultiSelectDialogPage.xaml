@@ -1,87 +1,49 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PCCE.MultiSelectDialogPage">
-    <StackLayout Padding="10">
-        <Label Text="Avaliable Exclusive Types:" FontAttributes="Bold" />
+             x:Class="PCCE.MultiSelectDialogPage"
+             xmlns:model="clr-namespace:PCCE.Model"
+             xmlns:local="clr-namespace:PCCE"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <Grid RowDefinitions="Auto, *, 70"
+          ColumnDefinitions=".50*,.50*"
+          >
+        <Label Text="Avaliable Exclusion Items:" FontAttributes="Bold" />
         
-        <HorizontalStackLayout>
-            <CheckBox x:Name="ChocolateBarCheckBox" />
-            <Label Text="Chocolate Bar Gifts (10)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
+        <CollectionView x:Name="TreeView" ItemsSource="{Binding TreeNodes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <toolkit:Expander>
+                        <toolkit:Expander.Header>
+                            <HorizontalStackLayout>
+                                <CheckBox IsChecked="{Binding IsChecked}" />
+                                <Label Text="{Binding Name}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </toolkit:Expander.Header>
+                        <toolkit:Expander.Content>
+                            <CollectionView ItemsSource="{Binding Children}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <local:TreeNodeTemplate />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </toolkit:Expander.Content>
+                    </toolkit:Expander>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
         
-        <HorizontalStackLayout>
-            <CheckBox x:Name="EeveeCheckBox" />
-            <Label Text="Eevee Event Items (9)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="EndOfServiceCheckBox" />
-            <Label Text="End of Service Gifts (10)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="GlowingToyGiftsCheckBox" />
-            <Label Text="Glowing Toy Day Gifts (10)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="GoogleEventCheckBox" />
-            <Label Text="Google Event Items (15)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="OtherExclusivesCheckBox" />
-            <Label Text="Other Exclusive Items (75)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="SanrioCheckBox" />
-            <Label Text="Sanrio (141)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="SeasonGreetingCheckBox" />
-            <Label Text="Season Greetings Gifts (3)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="SousouCheckBox" />
-            <Label Text="SOU Collection Event Items (28)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="Splatoon2CheckBox" />
-            <Label Text="Splatoon 2 Event Items (30)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <CheckBox x:Name="SuperMarioCheckBox" />
-            <Label Text="Super Mario Event Items (38)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-
-        <HorizontalStackLayout>
-            <CheckBox x:Name="NyoCheckBox" />
-            <Label Text="New Year Omikugi Gifts (37)" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        
-        <Button x:Name="SelectAllButton" Text="Select All (406)" Clicked="OnSelectAllButtonClicked" Margin="20" BackgroundColor="Blue"/>
-        <Grid RowDefinitions="Auto, Auto, Auto, Auto"
-              Grid.Row="1" 
-              Grid.ColumnSpan="2"
-              ColumnDefinitions=".50*,.50*" VerticalOptions="Fill"
-              >
-            <Button Text="Cancel" 
-                Grid.Row="0"
-                Grid.Column="0"
-                Clicked="OnCancelButtonClicked" 
-                Margin="10,10" 
-                HorizontalOptions="Fill" />
-            <Button Text="OK" 
-                Grid.Row="0"
-                Grid.Column="1"
-                Clicked="OnOkButtonClicked" 
-                Margin="10,10" 
-                HorizontalOptions="Fill" />
-        </Grid>
-    </StackLayout>
+        <Button Text="Cancel" 
+            Grid.Row="2"
+            Grid.Column="0"
+            Clicked="OnCancelButtonClicked" 
+            Margin="10,10" 
+            HorizontalOptions="Fill" />
+        <Button Text="OK" 
+            Grid.Row="2"
+            Grid.Column="1"
+            Clicked="OnOkButtonClicked" 
+            Margin="10,10" 
+            HorizontalOptions="Fill" />
+    </Grid>
 </ContentPage>
