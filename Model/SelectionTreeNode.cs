@@ -54,8 +54,16 @@ namespace PCCE.Model
                 exclusiveItemIDsStream.Close();
             }
             else
-            {
-                DisplayName = value;
+            {   
+                if(Utilities.DisplayNameDictionary.TryGetValue(value, out string displayName))
+                {   
+                    DisplayName = displayName;
+                }
+                else
+                {
+                    Utilities.iNameDictictionary.TryGetValue(value, out string displayName);
+                    DisplayName = displayName;
+                }
             }
         }
 
