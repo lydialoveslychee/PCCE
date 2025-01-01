@@ -23,11 +23,11 @@
 		<ApplicationTitle>PCCE</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.MyShiLingStar.PCCE</ApplicationId>
+		<ApplicationId>com.LydiaLovesLychee.PCCE</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>2.1</ApplicationDisplayVersion>
-		<ApplicationVersion>2</ApplicationVersion>
+		<ApplicationDisplayVersion>3.0</ApplicationDisplayVersion>
+		<ApplicationVersion>3</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
@@ -169,7 +169,10 @@
 
 	<ItemGroup>
 	  <MauiAsset Include="List\ExclusiveItems\*.txt">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <CopyToOutputDirectory></CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Include="Resources\Images\*.png">
+	    <CopyToOutputDirectory></CopyToOutputDirectory>
 	  </MauiAsset>
 	
 	</ItemGroup>
@@ -194,7 +197,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Update="Resources\Images\cookie_ticket.png">
+	  <MauiImage Update="Resources\Images\*.png">
 	    <CopyToOutputDirectory></CopyToOutputDirectory>
 	  </MauiImage>
 	</ItemGroup>

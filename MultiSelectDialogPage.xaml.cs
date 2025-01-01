@@ -8,42 +8,73 @@ namespace PCCE
     {
         public List<string> SelectedExclusive { get; private set; } = new List<string>();
 
+        public List<string> SelectedStickers { get; private set; } = new List<string>();
+
         public List<Model.SelectionTreeNode> TreeNodes {get; set; } = new List<Model.SelectionTreeNode>();
+        
+        public List<Model.SelectionTreeNode> AvaliableStickers { get; set; } = new List<Model.SelectionTreeNode>();
         
         public MultiSelectDialogPage()
         {
             BindingContext = this;
+
             TreeNodes =
             [
                 new Model.SelectionTreeNode 
                 {
                     Name = "ExclusiveTypes"
+                },
+                new Model.SelectionTreeNode
+                {
+                    Name = "StickerTypes"
                 }
             ];
+            TreeNodes[0].GenerateChildNode();
+            TreeNodes[1].GenerateChildNode();
+
             InitializeComponent();
         }
 
 
         private async void OnOkButtonClicked(object sender, EventArgs e)
         {
-            GetExclusiveItems(TreeNodes);
+            GetExclusiveItems(TreeNodes[0]);
+            GetSelectedStickers(TreeNodes[1]);
             await Navigation.PopModalAsync();
         }
 
-        private void GetExclusiveItems(List<Model.SelectionTreeNode> treeNodes)
+        private void GetSelectedStickers(Model.SelectionTreeNode treeNode)
         {
-            foreach (var node in treeNodes)
+            if (treeNode.Children.Count == 0)
             {
-                if (node.Children.Count == 0)
+                if (treeNode.IsChecked)
                 {
-                    if (node.IsChecked)
-                    {
-                        SelectedExclusive.Add(node.Name);
-                    }
+                    SelectedStickers.Add(treeNode.Name);
                 }
-                else
+            }
+            else
+            {
+                foreach (var node in treeNode.Children)
                 {
-                    GetExclusiveItems(node.Children);
+                    GetSelectedStickers(node);
+                }
+            }
+        }
+
+        private void GetExclusiveItems(Model.SelectionTreeNode treeNode)
+        {
+            if (treeNode.Children.Count == 0)
+            {
+                if (treeNode.IsChecked)
+                {
+                    SelectedExclusive.Add(treeNode.Name);
+                }
+            }
+            else
+            {
+                foreach (var node in treeNode.Children)
+                {
+                    GetExclusiveItems(node);
                 }
             }
         }

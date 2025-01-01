@@ -3,12 +3,13 @@ An updated version of the PCCE app. You can find the original app here: https://
 
 ## New Features
 
-   - Users can replace part of their items with all the exclusive items (or selected types) to their save file by clicking "ChangeAll" button instead of editing one by one.
+   - Users can replace part of their items with all the exclusive items and stickers (or selected types) to their save file by clicking "ChangeAll" button instead of editing one by one.
 
-   - The replacement will start from the most recently gained items in the game.
+   - If the user choose an existed sticker, the quantity of this sticker will be added by 99. If the user choose a new sticker(haven't owned before), the quantity of this sticker will be set as 99. 
 
+   - The replacement will start from the most recently gained and unchanged items in the game. Users can get multiple copies of items by re-click the "ChangeAll" button.
 
-   - However, please make sure that you have enough unnecessary items to be replaced(maybe use the complete tickets to buy some cookies and eat them to get enough items). Otherwise, unpredictable error may occurs.
+   - However, please make sure that you have enough unnecessary items to be replaced(maybe use the complete tickets to buy some cookies and eat them to get enough items). Otherwise, unpredictable error may occur.
 
 ## Exclusive Items List
 

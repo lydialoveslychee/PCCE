@@ -1,0 +1,4 @@
+Sticker Types
+OOTDStickers
+OtherStickers
+NPCStickers

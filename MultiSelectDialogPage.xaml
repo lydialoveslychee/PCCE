@@ -17,8 +17,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate 
                     x:DataType="model:SelectionTreeNode">
-                    <toolkit:Expander
-                        IsExpanded="True">
+                    <toolkit:Expander>
                         <toolkit:Expander.Header>
                             <HorizontalStackLayout>
                                 <CheckBox x:Name="{Binding Name}" IsChecked="{Binding IsChecked}" Color="Blue" />
@@ -48,6 +47,9 @@
                                                             x:DataType="model:SelectionTreeNode">
                                                             <HorizontalStackLayout>
                                                                 <CheckBox x:Name="{Binding Name}" IsChecked="{Binding IsChecked}" Color="DeepPink"/>
+                                                                <Image Aspect="AspectFill" Source="{Binding ItemImage}"
+                                                                    WidthRequest="75"
+                                                                    HeightRequest="75"/>
                                                                 <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
                                                             </HorizontalStackLayout>
                                                         </DataTemplate>

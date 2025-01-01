@@ -14,26 +14,23 @@ namespace PCCE.Model
 
         public string DisplayName { get; set; } = string.Empty;
 
-        private string _name = string.Empty;
+        public ImageSource ItemImage { get; set; }
 
-        public string Name 
-        { 
-            get => _name; 
-            set
+        public string Name {get; set; } = string.Empty;
+
+        public async void GenerateChildNode()
+        {
+            if (!string.IsNullOrEmpty(this.Name))
             {
-                _name = value;
-                if (!string.IsNullOrEmpty(value))
-                {
-                    Console.WriteLine("Tree Node Name: " + value);
-                    LoadNameAsync(value);
-                }
-            } 
+                // Console.WriteLine("Tree Node Name: " + value);
+                LoadNameAsync(this.Name);
+            }
         }
 
         private async void LoadNameAsync(string value)
         {
             string ListFilePath = "List/ExclusiveItems/" + value + ".txt";
-            Console.WriteLine("ListFilePath: " + ListFilePath);
+            // Console.WriteLine("ListFilePath: " + ListFilePath);
             try {
                 var exclusiveItemIDsStream = await FileSystem.OpenAppPackageFileAsync(ListFilePath);
                 using var exclusiveItemIDsReader = new StreamReader(exclusiveItemIDsStream);
@@ -50,6 +47,7 @@ namespace PCCE.Model
                         else
                         {
                             SelectionTreeNode child = new() { Name = line, Parent = this };
+                            child.GenerateChildNode();
                             Children.Add(child);    
                             Count += child.Count;
                         }
@@ -59,17 +57,32 @@ namespace PCCE.Model
                 exclusiveItemIDsReader.Close();
                 exclusiveItemIDsStream.Close();
             } catch (Exception e) {
-                Console.WriteLine("Exception: " + e.Message);
+                // Console.WriteLine("Exception: " + e.Message);
+                Utilities.iNameDict.TryGetValue(Utilities.ConvertToUint(value), out string? iName);
                 if(Utilities.DisplayNameDict.TryGetValue(Utilities.ConvertToUint(value), out string? displayName))
                 {   
                     DisplayName = displayName;
                 }
                 else
                 {
-                    Utilities.iNameDict.TryGetValue(Utilities.ConvertToUint(value), out string? iName);
                     DisplayName = iName ?? value;
                 }
                 Count = 1;
+                
+                iName = iName.ToLower();
+                var context = Android.App.Application.Context;
+                var resourceName = System.IO.Path.GetFileNameWithoutExtension(iName + ".png");
+                int resourceId = context.Resources.GetIdentifier(resourceName, "drawable", context.PackageName);
+                
+                if (resourceId != 0) 
+                {
+                    ItemImage = ImageSource.FromFile(iName);
+                }
+                else
+                {
+                    ItemImage = ImageSource.FromFile("unknown.png");
+                }
+            
             }
         }
 

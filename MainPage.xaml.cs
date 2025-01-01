@@ -7,7 +7,7 @@ namespace PCCE
     public partial class MainPage : ContentPage
     {
         readonly string WindowsVersion = "v3.4";
-        readonly string AndroidVersion = "v2.1";
+        readonly string AndroidVersion = "v3.0";
 
         readonly Utilities U = new();
         readonly IFileSaver fileSaver;
@@ -381,6 +381,7 @@ namespace PCCE
         private async void OnChangeAllClicked(object sender, EventArgs e)
         {
             var changedNum = 0;
+            var existedStickersNum = 0;
             try
             {
                 var multiSelectDialogPage = new MultiSelectDialogPage();
@@ -392,14 +393,15 @@ namespace PCCE
                 await tcs.Task;
 
                 var selectedExclusive = multiSelectDialogPage.SelectedExclusive;
+                var selectedStickers = multiSelectDialogPage.SelectedStickers;
 
-                if (selectedExclusive.Count == 0)
+                if (selectedExclusive.Count == 0 && selectedStickers.Count == 0)
                 {
                     await DisplayAlert("Nothing Happened", "No items changed", "OK");
                     return;
                 }
 
-                var answer = await DisplayAlert("Attention", "You are going to change " + selectedExclusive.Count + " items. Please make sure that you have enough unwanted items to replace.", "I have enough items", "Cancel");
+                var answer = await DisplayAlert("Attention", "You are going to change " + selectedExclusive.Count + " items and " + selectedStickers.Count + " stickers. Please make sure that you have enough unwanted items to replace.", "I have enough items", "Cancel");
                 if (!answer)
                 {
                     return;
@@ -410,23 +412,69 @@ namespace PCCE
                     throw new Exception("InventoryItems is null");
                 }
                 List<Model.InventoryItem> sorted = Utilities.inventoryItemList.OrderByDescending(d => d.ItemDate).ToList();
+                List<string> newStickers = new();
+                for (int i = 0; i < selectedStickers.Count; i++)
+                {
+                    List<Model.InventoryItem> existedStickers = sorted.Where(x => x.ItemID == Utilities.ConvertToUint(selectedStickers[i])).ToList();
+                    if (existedStickers.Count > 0)
+                    {
+                        existedStickers[0].ItemNum += 99;
+                        existedStickers[0].HasChanged = true;
+                        existedStickersNum++;
+                        continue;
+                    } 
+                    else
+                    {
+                        newStickers.Add(selectedStickers[i]);
+                    }
+                }
 
+                int sortListPos = 0;
                 for (int i = 0; i < selectedExclusive.Count; i++)
                 {
-                    if (sorted.Count <= i)
+                    while (sorted.Count > sortListPos && sorted[sortListPos].HasChanged)
                     {
-                        throw new Exception("No enough inventory items to change (please buy more!)");
+                        sortListPos++;
                     }
-                    if (sorted[i] == null)
+                    if (sorted.Count <= sortListPos)
+                    {
+                        throw new Exception("No enough unchanged inventory items to change (please buy more!)");
+                    }
+                    if (sorted[sortListPos] == null)
                     {
                         throw new Exception("An item in InventoryItems is null");
                     }
-                    sorted[i].ItemID = Utilities.ConvertToUint(selectedExclusive[i]);
-                    sorted[i].ItemNum = 1;
-                    sorted[i].ItemIName = Utilities.GetItemIName(sorted[i].ItemID);   
-                    sorted[i].ItemDisplayName = Utilities.GetItemDisplayName(sorted[i].ItemID);   
-                    sorted[i].SetImage();
-                    sorted[i].HasChanged = true;
+                    sorted[sortListPos].ItemID = Utilities.ConvertToUint(selectedExclusive[i]);
+                    sorted[sortListPos].ItemNum = 1;
+                    sorted[sortListPos].ItemIName = Utilities.GetItemIName(sorted[sortListPos].ItemID);   
+                    sorted[sortListPos].ItemDisplayName = Utilities.GetItemDisplayName(sorted[sortListPos].ItemID);   
+                    sorted[sortListPos].SetImage();
+                    sorted[sortListPos].HasChanged = true;
+                    sortListPos++;
+                    changedNum++;
+                }
+
+                for (int i = 0; i < newStickers.Count; i++)
+                {
+                    while (sorted.Count > sortListPos && sorted[sortListPos].HasChanged)
+                    {
+                        sortListPos++;
+                    }
+                    if (sorted.Count <= sortListPos)
+                    {
+                        throw new Exception("No enough unchanged inventory items to change (please buy more!)");
+                    }
+                    if (sorted[sortListPos] == null)
+                    {
+                        throw new Exception("An item in InventoryItems is null");
+                    }
+                    sorted[sortListPos].ItemID = Utilities.ConvertToUint(newStickers[i]);
+                    sorted[sortListPos].ItemNum = 99;
+                    sorted[sortListPos].ItemIName = Utilities.GetItemIName(sorted[sortListPos].ItemID);   
+                    sorted[sortListPos].ItemDisplayName = Utilities.GetItemDisplayName(sorted[sortListPos].ItemID);   
+                    sorted[sortListPos].SetImage();
+                    sorted[sortListPos].HasChanged = true;
+                    sortListPos++;
                     changedNum++;
                 }
             
@@ -435,7 +483,7 @@ namespace PCCE
             {
                 await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
-            await DisplayAlert("Success", changedNum + " items have been changed!", "OK");
+            await DisplayAlert("Success", changedNum + " items have been changed and " + existedStickersNum + " existed stickers have been refilled!", "OK");
         }
     }
 
