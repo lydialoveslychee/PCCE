@@ -49,15 +49,19 @@ namespace PCCE.Model
         }
         public void SetImage()
         {
-            ImagePath = "Images\\" + ItemIName + ".png";
-            if (File.Exists(ImagePath))
+            var context = Android.App.Application.Context;
+            var resourceName = System.IO.Path.GetFileNameWithoutExtension(ItemIName + ".png");
+            int resourceId = context.Resources.GetIdentifier(resourceName, "drawable", context.PackageName);
+            
+            if (resourceId != 0) 
             {
-                ItemImage = ImageSource.FromFile("Images\\" + ItemIName + ".png");
+                ItemImage = ImageSource.FromFile(ItemIName);
             }
             else
             {
                 ItemImage = ImageSource.FromFile("cookie_ticket.png");
             }
+            
         }
     }
 }
